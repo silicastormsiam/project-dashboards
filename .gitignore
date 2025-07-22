@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+
+# Excel
+*.xlsx
+*.xls
+~$*.xlsx
+
+# Logs
+*.log
