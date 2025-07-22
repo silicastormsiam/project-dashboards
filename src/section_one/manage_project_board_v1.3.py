@@ -9,7 +9,7 @@ from datetime import datetime
 # Owner: Andrew Holland
 # Purpose: Automate task creation and updates on GitHub Project board using GraphQL API
 # Change Log (Last 4):
-#   - Version 1.3, 22-07-2025: Enhanced error handling and skip existing tasks
+#   - Version 1.3, 22-07-2025: Fixed createIssue mutation to use labelIds instead of labels
 #   - Version 1.2, 22-07-2025: Fixed token typo and added error handling
 #   - Version 1.1, 22-07-2025: Updated to use GraphQL API for new Projects experience
 #   - Version 1.0, 22-07-2025: Initial script using REST API (deprecated)
@@ -81,6 +81,38 @@ tasks = [
         "due_date": "TBD"
     }
 ]
+
+def get_label_ids():
+    if not TOKEN:
+        print("Error: GITHUB_TOKEN is not set")
+        return {}
+    
+    client = GraphQLClient(GITHUB_API)
+    client.inject_token(f"Bearer {TOKEN}")
+    
+    query = """
+    query {
+      repository(owner: "silicastormsiam", name: "project-dashboards") {
+        labels(first: 10) {
+          nodes {
+            id
+            name
+          }
+        }
+      }
+    }
+    """
+    
+    try:
+        result = json.loads(client.execute(query))
+        if "errors" in result:
+            print(f"GraphQL errors fetching labels: {result['errors']}")
+            return {}
+        labels = result.get("data", {}).get("repository", {}).get("labels", {}).get("nodes", [])
+        return {label["name"]: label["id"] for label in labels}
+    except Exception as e:
+        print(f"Failed to fetch label IDs: {str(e)}")
+        return {}
 
 def get_status_field_id(project_id):
     if not TOKEN:
@@ -156,13 +188,21 @@ def get_existing_issues():
         print(f"Failed to get existing issues: {str(e)}")
         return []
 
-def create_issue_and_add_to_project(project_id, task, status_field_id, status_option_id):
+def create_issue_and_add_to_project(project_id, task, status_field_id, status_option_id, label_ids):
     if not TOKEN:
         print("Error: GITHUB_TOKEN is not set")
         return None
     
     client = GraphQLClient(GITHUB_API)
     client.inject_token(f"Bearer {TOKEN}")
+    
+    # Get label ID for the task
+    label_id = label_ids.get(task["label"])
+    if not label_id:
+        print(f"No label ID found for {task['label']}, creating issue without label")
+        label_id_clause = ""
+    else:
+        label_id_clause = f'labelIds: ["{label_id}"]'
     
     # Create issue
     mutation = """
@@ -171,14 +211,14 @@ def create_issue_and_add_to_project(project_id, task, status_field_id, status_op
         repositoryId: "%s"
         title: "%s"
         body: "%s"
-        labels: ["%s"]
+        %s
       }) {
         issue {
           id
         }
       }
     }
-    """ % (REPO_ID, task["title"], task["body"], task["label"])
+    """ % (REPO_ID, task["title"], task["body"], label_id_clause)
     
     try:
         result = json.loads(client.execute(mutation))
@@ -250,6 +290,7 @@ def main():
         print("Failed to get Status field ID or options")
         return
     
+    label_ids = get_label_ids()
     existing_issues = get_existing_issues()
     
     for task in tasks:
@@ -258,7 +299,7 @@ def main():
             continue
         status_option_id = status_options.get(task["column"])
         if status_option_id:
-            create_issue_and_add_to_project(PROJECT_ID, task, status_field_id, status_option_id)
+            create_issue_and_add_to_project(PROJECT_ID, task, status_field_id, status_option_id, label_ids)
     
     with open(log_file, "a") as f:
         f.write(f"manage_project_board_v1.3.py executed, created tasks on {datetime.now().strftime('%d-%m-%Y %H:%M +07')}\n")
