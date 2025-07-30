@@ -6,303 +6,126 @@ from datetime import datetime
 # Metadata
 # File Name: manage_project_board_v1.3.py
 # Version: 1.3
-# Owner: Andrew Holland
-# Purpose: Automate task creation and updates on GitHub Project board using GraphQL API
+# Owner: Andrew John Holland
+# Purpose: Add tasks to GitHub Project board using Projects V2
 # Change Log (Last 4):
-#   - Version 1.3, 22-07-2025: Fixed createIssue mutation to use labelIds instead of labels
-#   - Version 1.2, 22-07-2025: Fixed token typo and added error handling
-#   - Version 1.1, 22-07-2025: Updated to use GraphQL API for new Projects experience
-#   - Version 1.0, 22-07-2025: Initial script using REST API (deprecated)
+#   - Version 1.3, 23-07-2025: Added major SilicaStormSiam projects and Homelab tasks
 
 # Configuration
 GITHUB_API = "https://api.github.com/graphql"
-REPO = "silicastormsiam/project-dashboards"
-PROJECT_ID = "PVT_kwHOCZq5ps4A-gWw"  # Project ID for Project Dashboards on GitHub
-REPO_ID = "R_kgDOPPbNSw"  # Repository ID for silicastormsiam/project-dashboards
+REPO_NAME = "silicastormsiam/project-dashboards"
+PROJECT_ID = "PVT_kwHOCZq5ps4A-gWw"  # Verify for projects/2
 TOKEN = os.getenv("GITHUB_TOKEN")
-log_file = "project_log.txt"  # Adjusted for local execution; update to /var/www/dashboard on VPS
+log_file = "project_log.txt"
 
-# Task definitions
 tasks = [
-    {
-        "title": "Install Python and dependencies on VPS",
-        "body": "Install Python, Dash, Gunicorn, NGINX, and Certbot on Hostinger KVM 2 VPS.",
-        "label": "Section One",
-        "column": "Executing",
-        "due_date": "27-07-2025"
-    },
-    {
-        "title": "Configure NGINX and SSL for cyberpunkmonk.com",
-        "body": "Set up NGINX reverse proxy and SSL with Certbot for dashboard.",
-        "label": "Section One",
-        "column": "Executing",
-        "due_date": "29-07-2025"
-    },
-    {
-        "title": "Set up cron job for sync_dashboard_v1.4.py",
-        "body": "Configure daily cron job for dashboard updates.",
-        "label": "Section One",
-        "column": "Executing",
-        "due_date": "31-07-2025"
-    },
-    {
-        "title": "Define dashboard requirements",
-        "body": "Document dashboard requirements (e.g., GitHub API integration, visualizations).",
-        "label": "Section Two",
-        "column": "Planning",
-        "due_date": "27-07-2025"
-    },
-    {
-        "title": "Develop Plotly Dash dashboard code",
-        "body": "Code Plotly Dash application for project and task visualization.",
-        "label": "Section Two",
-        "column": "Executing",
-        "due_date": "31-07-2025"
-    },
-    {
-        "title": "Integrate GitHub API for data",
-        "body": "Implement GitHub API to fetch project board data.",
-        "label": "Section Two",
-        "column": "Executing",
-        "due_date": "01-08-2025"
-    },
-    {
-        "title": "Deploy dashboard on cyberpunkmonk.com",
-        "body": "Deploy Plotly Dash app on Hostinger VPS.",
-        "label": "Section Two",
-        "column": "Executing",
-        "due_date": "02-08-2025"
-    },
-    {
-        "title": "Define Section Three scope",
-        "body": "Placeholder for future project scope.",
-        "label": "Section Three",
-        "column": "Initiating",
-        "due_date": "TBD"
-    }
+    "Install Python and dependencies on VPS",
+    "Configure NGINX and SSL for cyberpunkmonk.com",
+    "Set up cron job for sync_dashboard_v1.4.py",
+    "Define dashboard requirements",
+    "Develop Plotly Dash dashboard code",
+    "Integrate GitHub API for data",
+    "Deploy dashboard on cyberpunkmonk.com",
+    "Define Section Three scope",
+    "Configure /volume1/GitHub/ shared folder",
+    "Add SSH deploy key to GitHub",
+    "Install Git Server",
+    "Set up Synology sync script",
+    "Initialize Synology bare repository",
+    "Create GitHub repository backup",
+    "AIFU - Artificial Intelligence Future Uncovered YouTube Channel",
+    "RATS - Recruitment Application Tracking System",
+    "Homelab Hardware Development: Create internal inventory with IPs and ports",
+    "Homelab Hardware Development: Create public inventory without sensitive data",
+    "CPM - Chatbot Project Management"
 ]
 
-def get_label_ids():
-    if not TOKEN:
-        print("Error: GITHUB_TOKEN is not set")
-        return {}
-    
-    client = GraphQLClient(GITHUB_API)
-    client.inject_token(f"Bearer {TOKEN}")
-    
-    query = """
-    query {
-      repository(owner: "silicastormsiam", name: "project-dashboards") {
-        labels(first: 10) {
-          nodes {
-            id
-            name
-          }
+def create_issue(client, repo_name, title):
+    mutation = """
+    mutation {
+      createIssue(input: {
+        repositoryId: "%s",
+        title: "%s",
+        body: "Created for SSS-Project Dashboard"
+      }) {
+        issue {
+          id
+          title
         }
       }
     }
     """
-    
-    try:
-        result = json.loads(client.execute(query))
-        if "errors" in result:
-            print(f"GraphQL errors fetching labels: {result['errors']}")
-            return {}
-        labels = result.get("data", {}).get("repository", {}).get("labels", {}).get("nodes", [])
-        return {label["name"]: label["id"] for label in labels}
-    except Exception as e:
-        print(f"Failed to fetch label IDs: {str(e)}")
-        return {}
-
-def get_status_field_id(project_id):
-    if not TOKEN:
-        print("Error: GITHUB_TOKEN is not set")
-        return None, None
-    
-    client = GraphQLClient(GITHUB_API)
-    client.inject_token(f"Bearer {TOKEN}")
-    
-    query = """
+    repo_query = """
     query {
-      node(id: "%s") {
-        ... on ProjectV2 {
-          fields(first: 10) {
-            nodes {
-              ... on ProjectV2SingleSelectField {
-                id
-                name
-                options {
-                  id
-                  name
-                }
-              }
-            }
-          }
+      repository(owner: "%s", name: "%s") {
+        id
+      }
+    }
+    """ % (repo_name.split("/")[0], repo_name.split("/")[1])
+    repo_result = json.loads(client.execute(repo_query))
+    repo_id = repo_result["data"]["repository"]["id"]
+    result = json.loads(client.execute(mutation % (repo_id, title)))
+    if "errors" in result:
+        print(f"Error creating issue {title}: {result['errors']}")
+        return None
+    return result["data"]["createIssue"]["issue"]["id"]
+
+def add_issue_to_project(client, project_id, issue_id):
+    mutation = """
+    mutation {
+      addProjectV2ItemById(input: {
+        projectId: "%s",
+        contentId: "%s"
+      }) {
+        item {
+          id
         }
       }
     }
-    """ % project_id
-    
-    try:
-        result = json.loads(client.execute(query))
-        if "errors" in result:
-            print(f"GraphQL errors: {result['errors']}")
-            return None, None
-        fields = result.get("data", {}).get("node", {}).get("fields", {}).get("nodes", [])
-        for field in fields:
-            if field.get("name") == "Status":
-                return field["id"], {option["name"]: option["id"] for option in field["options"]}
-        print("Failed to find Status field")
-        return None, None
-    except Exception as e:
-        print(f"Failed to get status field ID: {str(e)}")
-        return None, None
+    """ % (project_id, issue_id)
+    result = json.loads(client.execute(mutation))
+    if "errors" in result:
+        print(f"Error adding issue to project: {result['errors']}")
+        return False
+    return True
 
-def get_existing_issues():
-    if not TOKEN:
-        print("Error: GITHUB_TOKEN is not set")
-        return []
-    
-    client = GraphQLClient(GITHUB_API)
-    client.inject_token(f"Bearer {TOKEN}")
-    
+def get_existing_issues(client, repo_name):
     query = """
     query {
-      repository(owner: "silicastormsiam", name: "project-dashboards") {
-        issues(first: 100) {
+      repository(owner: "%s", name: "%s") {
+        issues(first: 100, states: OPEN) {
           nodes {
             title
           }
         }
       }
     }
-    """
-    
-    try:
-        result = json.loads(client.execute(query))
-        if "errors" in result:
-            print(f"GraphQL errors: {result['errors']}")
-            return []
-        return [issue["title"] for issue in result.get("data", {}).get("repository", {}).get("issues", {}).get("nodes", [])]
-    except Exception as e:
-        print(f"Failed to get existing issues: {str(e)}")
+    """ % (repo_name.split("/")[0], repo_name.split("/")[1])
+    result = json.loads(client.execute(query))
+    if "errors" in result:
+        print(f"Error fetching issues: {result['errors']}")
         return []
-
-def create_issue_and_add_to_project(project_id, task, status_field_id, status_option_id, label_ids):
-    if not TOKEN:
-        print("Error: GITHUB_TOKEN is not set")
-        return None
-    
-    client = GraphQLClient(GITHUB_API)
-    client.inject_token(f"Bearer {TOKEN}")
-    
-    # Get label ID for the task
-    label_id = label_ids.get(task["label"])
-    if not label_id:
-        print(f"No label ID found for {task['label']}, creating issue without label")
-        label_id_clause = ""
-    else:
-        label_id_clause = f'labelIds: ["{label_id}"]'
-    
-    # Create issue
-    mutation = """
-    mutation {
-      createIssue(input: {
-        repositoryId: "%s"
-        title: "%s"
-        body: "%s"
-        %s
-      }) {
-        issue {
-          id
-        }
-      }
-    }
-    """ % (REPO_ID, task["title"], task["body"], label_id_clause)
-    
-    try:
-        result = json.loads(client.execute(mutation))
-        if "errors" in result:
-            print(f"GraphQL errors creating issue {task['title']}: {result['errors']}")
-            return None
-        issue_id = result.get("data", {}).get("createIssue", {}).get("issue", {}).get("id")
-        if not issue_id:
-            print(f"Failed to create issue: {task['title']}")
-            return None
-        
-        # Add issue to project
-        mutation = """
-        mutation {
-          addProjectV2ItemById(input: {
-            projectId: "%s"
-            contentId: "%s"
-          }) {
-            item {
-              id
-            }
-          }
-        }
-        """ % (project_id, issue_id)
-        
-        result = json.loads(client.execute(mutation))
-        if "errors" in result:
-            print(f"GraphQL errors adding issue {task['title']} to project: {result['errors']}")
-            return None
-        item_id = result.get("data", {}).get("addProjectV2ItemById", {}).get("item", {}).get("id")
-        if not item_id:
-            print(f"Failed to add issue {task['title']} to project")
-            return None
-        
-        # Set status field
-        mutation = """
-        mutation {
-          updateProjectV2ItemFieldValue(input: {
-            projectId: "%s"
-            itemId: "%s"
-            fieldId: "%s"
-            value: { singleSelectOptionId: "%s" }
-          }) {
-            projectV2Item {
-              id
-            }
-          }
-        }
-        """ % (project_id, item_id, status_field_id, status_option_id)
-        
-        try:
-            result = json.loads(client.execute(mutation))
-            if "errors" in result:
-                print(f"GraphQL errors setting status for {task['title']}: {result['errors']}")
-                return None
-            if result.get("data", {}).get("updateProjectV2ItemFieldValue"):
-                print(f"Created and assigned: {task['title']} to {task['column']}")
-            return item_id
-        except Exception as e:
-            print(f"Failed to set status for {task['title']}: {str(e)}")
-            return None
-    except Exception as e:
-        print(f"Failed to process task {task['title']}: {str(e)}")
-        return None
+    return [issue["title"] for issue in result["data"]["repository"]["issues"]["nodes"]]
 
 def main():
-    status_field_id, status_options = get_status_field_id(PROJECT_ID)
-    if not status_field_id or not status_options:
-        print("Failed to get Status field ID or options")
+    if not TOKEN:
+        print("Error: GITHUB_TOKEN is not set")
         return
-    
-    label_ids = get_label_ids()
-    existing_issues = get_existing_issues()
-    
+    client = GraphQLClient(GITHUB_API)
+    client.inject_token(f"Bearer {TOKEN}")
+    existing_titles = get_existing_issues(client, REPO_NAME)
     for task in tasks:
-        if task["title"] in existing_issues:
-            print(f"Skipping existing issue: {task['title']}")
+        if task in existing_titles:
+            print(f"Skipping existing issue: {task}")
             continue
-        status_option_id = status_options.get(task["column"])
-        if status_option_id:
-            create_issue_and_add_to_project(PROJECT_ID, task, status_field_id, status_option_id, label_ids)
-    
-    with open(log_file, "a") as f:
-        f.write(f"manage_project_board_v1.3.py executed, created tasks on {datetime.now().strftime('%d-%m-%Y %H:%M +07')}\n")
+        issue_id = create_issue(client, REPO_NAME, task)
+        if issue_id:
+            if add_issue_to_project(client, PROJECT_ID, issue_id):
+                print(f"Created and assigned: {task}")
+                with open(log_file, "a") as f:
+                    f.write(f"Created and assigned: {task} on {datetime.now().strftime('%d-%m-%Y %H:%M +07')}\n")
+            else:
+                print(f"Failed to add {task} to project")
 
 if __name__ == "__main__":
     main()

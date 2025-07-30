@@ -4,15 +4,15 @@ from graphqlclient import GraphQLClient
 from datetime import datetime
 
 # Metadata
-# File Name: configure_project_columns_v1.3.py
-# Version: 1.3
+# File Name: configure_project_columns_v1.4.py
+# Version: 1.4
 # Owner: Andrew Holland
 # Purpose: Configure PMBOK process group columns on GitHub Project board using GraphQL API, handling existing fields
 # Change Log (Last 4):
+#   - Version 1.4, 22-07-2025: Fixed GraphQL syntax error in settings JSON and improved error handling
 #   - Version 1.3, 22-07-2025: Added check for existing Status field to avoid duplicates
 #   - Version 1.2, 22-07-2025: Added enhanced error handling and logging for GraphQL API calls
 #   - Version 1.1, 22-07-2025: Updated to use GraphQL API for new Projects experience; fixed headers parameter
-#   - Version 1.0, 22-07-2025: Initial script using REST API (deprecated)
 
 # Configuration
 GITHUB_API = "https://api.github.com/graphql"
@@ -79,13 +79,24 @@ def create_status_field(project_id):
     client = GraphQLClient(GITHUB_API)
     client.inject_token(f"Bearer {TOKEN}")
     
+    # Properly escaped JSON settings
+    settings = json.dumps({
+        "options": [
+            {"name": "Initiating"},
+            {"name": "Planning"},
+            {"name": "Executing"},
+            {"name": "Monitoring and Controlling"},
+            {"name": "Closing"}
+        ]
+    })
+    
     mutation = """
     mutation {
       addProjectV2Field(input: {
         projectId: "%s"
         fieldType: SINGLE_SELECT
         name: "Status"
-        settings: "{\"options\": [{\"name\": \"Initiating\"}, {\"name\": \"Planning\"}, {\"name\": \"Executing\"}, {\"name\": \"Monitoring and Controlling\"}, {\"name\": \"Closing\"}]}"
+        settings: %s
       }) {
         projectV2Field {
           id
@@ -93,7 +104,7 @@ def create_status_field(project_id):
         }
       }
     }
-    """ % project_id
+    """ % (project_id, json.dumps(settings))
     
     try:
         result = json.loads(client.execute(mutation))
@@ -121,7 +132,7 @@ def main():
             return
     
     with open(log_file, "a") as f:
-        f.write(f"configure_project_columns_v1.3.py executed, configured PMBOK status field on {datetime.now().strftime('%d-%m-%Y %H:%M +07')}\n")
+        f.write(f"configure_project_columns_v1.4.py executed, configured PMBOK status field on {datetime.now().strftime('%d-%m-%Y %H:%M +07')}\n")
 
 if __name__ == "__main__":
     main()
