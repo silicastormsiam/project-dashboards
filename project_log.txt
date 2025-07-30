@@ -1,0 +1,75 @@
+list_projects_v1.0.py executed, listed projects on 22-07-2025 12:37 +07
+list_projects_v1.1.py executed, listed projects on 22-07-2025 13:03 +07
+No project data returned on 22-07-2025 16:49 +07
+list_projects_v1.1.py executed, listed projects on 22-07-2025 16:59 +07
+manage_project_board_v1.3.py executed, created tasks on 22-07-2025 17:01 +07
+manage_project_board_v1.3.py executed, created tasks on 22-07-2025 17:11 +07
+sync_dashboard_v1.4.py executed, synced project data on 22-07-2025 17:12 +07
+Assigned label Section One to issue Install Python and dependencies on VPS on 22-07-2025 17:26 +07
+Assigned label Section One to issue Configure NGINX and SSL for cyberpunkmonk.com on 22-07-2025 17:26 +07
+Assigned label Section One to issue Set up cron job for sync_dashboard_v1.4.py on 22-07-2025 17:26 +07
+Assigned label Section One to issue Install Python and dependencies on VPS on 22-07-2025 17:47 +07
+Assigned label Section One to issue Configure NGINX and SSL for cyberpunkmonk.com on 22-07-2025 17:47 +07
+Assigned label Section One to issue Set up cron job for sync_dashboard_v1.4.py on 22-07-2025 17:47 +07
+Assigned label Section Two to issue Define dashboard requirements on 22-07-2025 17:47 +07
+Assigned label Section Two to issue Develop Plotly Dash dashboard code on 22-07-2025 17:47 +07
+Assigned label Section Two to issue Integrate GitHub API for data on 22-07-2025 17:47 +07
+Assigned label Section Two to issue Deploy dashboard on cyberpunkmonk.com on 22-07-2025 17:47 +07
+Assigned label Section Three to issue Define Section Three scope on 22-07-2025 17:47 +07
+manage_project_board_v1.3.py executed, created tasks on 22-07-2025 22:34 +07
+Created and assigned: Install Python and dependencies on VPS on 22-07-2025 22:47 +07
+Created and assigned: Configure NGINX and SSL for cyberpunkmonk.com on 22-07-2025 22:47 +07
+Created and assigned: Set up cron job for sync_dashboard_v1.4.py on 22-07-2025 22:47 +07
+Created and assigned: Develop Plotly Dash dashboard code on 22-07-2025 22:47 +07
+Created and assigned: Integrate GitHub API for data on 22-07-2025 22:47 +07
+Created and assigned: Deploy dashboard on cyberpunkmonk.com on 22-07-2025 22:47 +07
+Created and assigned: Configure /volume1/GitHub/ shared folder on 22-07-2025 22:47 +07
+Created and assigned: Add SSH deploy key to GitHub on 22-07-2025 22:47 +07
+Created and assigned: Install Git Server on 22-07-2025 22:47 +07
+Created and assigned: Set up Synology sync script on 22-07-2025 22:47 +07
+Created and assigned: Initialize Synology bare repository on 22-07-2025 22:47 +07
+Created and assigned: Create GitHub repository backup on 22-07-2025 22:47 +07
+Created and assigned: AIFU - Artificial Intelligence Future Uncovered YouTube Channel on 23-07-2025 07:25 +07
+Created and assigned: RATS - Recruitment Application Tracking System on 23-07-2025 07:25 +07
+Created and assigned: Homelab Hardware Development: Create internal inventory with IPs and ports on 23-07-2025 07:25 +07
+Created and assigned: Homelab Hardware Development: Create public inventory without sensitive data on 23-07-2025 07:25 +07
+Created and assigned: CPM - Chatbot Project Management on 23-07-2025 07:25 +07
+Created repository: silicastormsiam/rats on 23-07-2025 09:40 +07
+Updated status for Install Python and dependencies on VPS to Executing on 23-07-2025 10:09 +07
+Updated status for Configure NGINX and SSL for cyberpunkmonk.com to Executing on 23-07-2025 10:09 +07
+Updated status for Set up cron job for sync_dashboard_v1.4.py to Executing on 23-07-2025 10:09 +07
+Updated status for Define dashboard requirements to Executing on 23-07-2025 10:09 +07
+Updated status for Develop Plotly Dash dashboard code to Executing on 23-07-2025 10:09 +07
+Updated status for Integrate GitHub API for data to Executing on 23-07-2025 10:09 +07
+Updated status for Deploy dashboard on cyberpunkmonk.com to Executing on 23-07-2025 10:09 +07
+Updated status for Define Section Three scope to Executing on 23-07-2025 10:09 +07
+Updated status for Configure /volume1/GitHub/ shared folder to Closing on 23-07-2025 10:09 +07
+Updated status for Add SSH deploy key to GitHub to Closing on 23-07-2025 10:09 +07
+Updated status for Install Git Server to Executing on 23-07-2025 10:09 +07
+Updated status for Set up Synology sync script to Executing on 23-07-2025 10:09 +07
+Updated status for Initialize Synology bare repository to Executing on 23-07-2025 10:09 +07
+Updated status for Create GitHub repository backup to Executing on 23-07-2025 10:09 +07
+Updated status for AIFU - Artificial Intelligence Future Uncovered YouTube Channel to Closing on 23-07-2025 10:09 +07
+Updated status for RATS - Recruitment Application Tracking System to Executing on 23-07-2025 10:09 +07
+Updated status for Homelab Hardware Development: Create internal inventory with IPs and ports to Initiating on 23-07-2025 10:09 +07
+Updated status for Homelab Hardware Development: Create public inventory without sensitive data to Initiating on 23-07-2025 10:09 +07
+Updated status for CPM - Chatbot Project Management to Planning on 23-07-2025 10:09 +07
+Updated status for Install Python and dependencies on VPS to Executing on 23-07-2025 10:17 +07
+Updated status for Configure NGINX and SSL for cyberpunkmonk.com to Executing on 23-07-2025 10:17 +07
+Updated status for Set up cron job for sync_dashboard_v1.4.py to Executing on 23-07-2025 10:17 +07
+Updated status for Define dashboard requirements to Executing on 23-07-2025 10:17 +07
+Updated status for Develop Plotly Dash dashboard code to Executing on 23-07-2025 10:17 +07
+Updated status for Integrate GitHub API for data to Executing on 23-07-2025 10:17 +07
+Updated status for Deploy dashboard on cyberpunkmonk.com to Executing on 23-07-2025 10:17 +07
+Updated status for Define Section Three scope to Executing on 23-07-2025 10:17 +07
+Updated status for Configure /volume1/GitHub/ shared folder to Closing on 23-07-2025 10:17 +07
+Updated status for Add SSH deploy key to GitHub to Closing on 23-07-2025 10:17 +07
+Updated status for Install Git Server to Executing on 23-07-2025 10:17 +07
+Updated status for Set up Synology sync script to Executing on 23-07-2025 10:17 +07
+Updated status for Initialize Synology bare repository to Executing on 23-07-2025 10:17 +07
+Updated status for Create GitHub repository backup to Executing on 23-07-2025 10:17 +07
+Updated status for AIFU - Artificial Intelligence Future Uncovered YouTube Channel to Closing on 23-07-2025 10:17 +07
+Updated status for RATS - Recruitment Application Tracking System to Executing on 23-07-2025 10:17 +07
+Updated status for Homelab Hardware Development: Create internal inventory with IPs and ports to Initiating on 23-07-2025 10:17 +07
+Updated status for Homelab Hardware Development: Create public inventory without sensitive data to Initiating on 23-07-2025 10:17 +07
+Updated status for CPM - Chatbot Project Management to Planning on 23-07-2025 10:17 +07

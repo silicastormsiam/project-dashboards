@@ -1,0 +1,35 @@
+RATS Daily Checklist - Andrew John Holland
+Date: [Insert date, e.g., 23-07-2025]
+Project: Recruitment Application Tracking System (RATS)
+
+1. Review Outstanding Tasks:
+   - Check "PMBOK Task Board" at https://github.com/users/silicastormsiam/projects/3/views/1.
+   - Verify all nine tasks are present and correctly assigned:
+     - Create/update profiles on 9 platforms (Executing)
+     - Configure job alerts for IT roles (Executing)
+     - Verify platform profiles and alerts (Monitoring and Controlling)
+     - Set up email consolidation process (Executing)
+     - Validate database fields (Monitoring and Controlling)
+     - Create dashboard (Executing)
+     - Process daily job alerts (Executing)
+     - Deploy system and train user (Closing)
+     - Create a Daily Checklist - RATS (Planning)
+
+2. Update Profiles:
+   - Log in to each platform (Remote.co, Glassdoor, LinkedIn, Indeed, We Work Remotely, RemoteRocketship, Remote OK, Jobspresso, Google Careers) using andrewjohnholland@gmail.com.
+   - Update profiles with AIMS/Kronos, Agile/Scrum, certifications (e.g., PMP, Scrum Master), and job titles (e.g., Project Coordinator, Junior Project Manager).
+   - Upload resume_andrew_holland.pdf from ~/project-dashboards.
+   - Note updated platforms in the project board task “Create/update profiles on 9 platforms.”
+
+3. Retrieve Job Alert Emails:
+   - Check andrewjohnholland@gmail.com for job alerts from the nine platforms.
+   - Review alerts for roles: Project Coordinator, Junior Project Manager, Scrum Master, Agile Project Manager, Technical Project Coordinator, Associate Project Manager.
+   - Save relevant job postings to application_tracking.xlsx in ~/project-dashboards.
+
+4. Update Job Alerts:
+   - Adjust job alert settings on each platform to refine search criteria (e.g., remote, IT/Tech, Aerospace/Aviation, Logistics, Energy/Sustainability).
+   - Confirm alerts are active and delivering to andrewjohnholland@gmail.com.
+
+5. Log Progress:
+   - Update “PMBOK Task Board” with progress notes for tasks (e.g., “Profiles updated on LinkedIn, Indeed on 23-07-2025”).
+   - Save this checklist daily as rats_daily_checklist_[DD-MM-YYYY].txt in ~/project-dashboards.
